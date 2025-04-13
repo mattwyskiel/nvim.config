@@ -200,6 +200,9 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
+-- Telescope File Browser
+vim.keymap.set('n', '<space>fb', ':Telescope file_browser<CR>')
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -415,6 +418,7 @@ require('lazy').setup({
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
+      require('telescope').load_extension 'file_browser'
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
@@ -453,7 +457,10 @@ require('lazy').setup({
       end, { desc = '[S]earch [N]eovim files' })
     end,
   },
-
+  {
+    'nvim-telescope/telescope-file-browser.nvim',
+    dependencies = { 'nvim-telescope/telescope.nvim', 'nvim-lua/plenary.nvim' },
+  },
   -- LSP Plugins
   {
     -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
@@ -690,8 +697,10 @@ require('lazy').setup({
             },
           },
         },
+        yamlls = {},
+        yamllint = {},
       }
-
+      require('lspconfig').gh_actions_ls.setup {}
       -- Ensure the servers and tools above are installed
       --
       -- To check the current status of installed tools and/or manually install
